@@ -3,7 +3,8 @@
     "pages/index/index",
     "pages/logs/logs",
     "pages/mymusic/mymusic",
-    "pages/musicPlayer/musicPlayer"
+    "pages/musicPlayer/musicPlayer",
+    "pages/playlist/playlist"
   ],
   "window":{
     "backgroundTextStyle":"light",

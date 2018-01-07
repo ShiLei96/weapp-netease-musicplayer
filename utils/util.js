@@ -60,8 +60,47 @@ var getMusicUrl = function (songId) {
     })
   })
   return p
-  
-
-
 }
-module.exports = { formatTime, showBusy, showSuccess, showModel, getMusicUrl }
+
+//获取推荐歌单 index为歌单标签
+var getHotlist = function (index) {
+  var p = new promise(function (resolve, reject){
+    qcloud.request({
+      url: `${config.service.host}/weapp/hotlist?index=` + index,
+      login: false,
+      success(result) {
+        var j = JSON.stringify(result.data)
+        var json = JSON.parse(j)
+        console.log("请求URL...")
+        console.log(json.data.msg)
+        resolve(json.data.msg)
+      },
+      fail(error) {
+        console.log('request fail', error);
+      }
+    })
+  })
+  return p
+}
+
+//获取歌单详细信息 playlistId为歌单Id
+var getPlaylistDetail = function(playlistId){
+    var p = new promise(function (resolve, reject){
+    qcloud.request({
+      url: `${config.service.host}/weapp/playlist?playlistId=` + playlistId,
+      login: false,
+      success(result) {
+        var j = JSON.stringify(result.data)
+        var json = JSON.parse(j)
+        console.log("请求playlist-URL...")
+        console.log(json.data)
+        resolve(json.data)
+      },
+      fail(error) {
+        console.log('request fail', error);
+      }
+    })
+  })
+  return p
+}
+module.exports = { formatTime, showBusy, showSuccess, showModel, getMusicUrl, getHotlist, getPlaylistDetail }

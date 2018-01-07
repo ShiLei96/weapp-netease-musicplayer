@@ -51,16 +51,16 @@
       </swiper>
     </view>
     <block wx:for-items="{{requestResult}}" wx:for-item="song">
-      <view class="song-item" bindtap="bindViewTap" data-id="{{index}}" data-title="{{song.albumname}}">
+      <view class="song-item" bindtap="bindViewTap" data-id="{{index}}" data-title="{{song.name}}">
         <view class="song-image">
-          <image src="{{song.albumpic_big}}"></image>
+          <image src="{{song.coverImgUrl}}"></image>
         </view>
         <view class="song-info">
           <view>
-            <text class="song-title">{{song.songname}}</text>
+            <text class="song-title">{{song.name}}</text>
           </view>
           <view>
-            <text class="song-singer">{{song.singername}}</text>
+            <text class="song-singer">{{song.copywriter}}</text>
           </view>
         </view>
       </view>

@@ -48,11 +48,11 @@ Page({
     console.log("onReady...")
     this.startAnimation()
 
-    console.log("开始播放 src:" + globalCourseAudioListManager.audioList.song[globalCourseAudioListManager.currentIndex].src);
-    console.log(globalBgAudioManager)
-    console.log(globalCourseAudioListManager)
+    //console.log("开始播放 src:" + globalCourseAudioListManager.audioList.song[globalCourseAudioListManager.currentIndex].src);
+    console.log("globalBgAudioManager : "+globalBgAudioManager)
+    console.log("globalCourseAudioListManager : "+globalCourseAudioListManager)
     var src = await util.getMusicUrl(418603066)
-    await console.log(src)
+    console.log(src)
     globalBgAudioManager.src = src
     //globalBgAudioManager.src = globalCourseAudioListManager.audioList.song[globalCourseAudioListManager.currentIndex].src
     //globalBgAudioManager.src = this.data.src
@@ -101,7 +101,6 @@ Page({
           wx.hideLoading();
         }, 300)
       }
-      console.log(globalBgAudioManager.buffered)
 
       var rate = 100 * globalBgAudioManager.currentTime / globalBgAudioManager.duration
       var mm = parseInt(globalBgAudioManager.currentTime / 60)
@@ -120,14 +119,9 @@ Page({
         })
       }
     })
-    console.log("kaishih")
-
     globalBgAudioManager.changeAudio = function () {
       console.log("changeAudio")
     }
-
-    console.log(globalBgAudioManager.isWaiting)
-
   },
   //动画相关函数
   rotatePic: function () {

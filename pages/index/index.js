@@ -28,26 +28,12 @@ Page({
     inputShowed: false,
     inputVal: ""
   },
-  onReady: function () {
-    var that = this
-    qcloud.request({
-      url: `${config.service.host}/weapp/hotlist`,
-      login: false,
-      success(result) {
-        util.showSuccess('请求成功完成')
-        var j = JSON.stringify(result.data)
-        var json = JSON.parse(j)
-        that.setData({
-          requestResult: json.data.msg.songlist
-        })
-
-      },
-      fail(error) {
-        util.showModel('请求失败', error);
-        console.log('request fail', error);
-      }
+  onReady:async function () {
+    var hotlist
+    hotlist = await util.getHotlist("")
+    this.setData({
+      requestResult: hotlist
     })
-
   },
 
   upper: function (e) {
@@ -85,11 +71,10 @@ Page({
   //事件处理函数
   bindViewTap: function (e) {
     console.log(e)
-    var songInfo = this.data.requestResult[parseInt(e.currentTarget.dataset.id)]
-
-    console.log("前: " + songInfo)
+    var songList = this.data.requestResult[parseInt(e.currentTarget.dataset.id)]
+    console.log(songList)
     wx.navigateTo({
-      url: '../musicPlayer/musicPlayer?poster=' + songInfo.albumpic_big + "&name=" + songInfo.songname + "&author=" + songInfo.singername + "&src=" + songInfo.url
+      url: '../playlist/playlist?playlistId='+songList.id +"&imgUrl="+songList.coverImgUrl+"&name="+songList.name
     })
   },
   onLoad: function () {

@@ -56,7 +56,7 @@ Page({
   //事件处理函数
   bindViewTap: function () {
     wx.navigateTo({
-      url: '../musicPlayer/musicPlayer'
+      url: '../musicPlayer/musicPlayer?poster=' + songInfo.albumpic_big + "&name=" + songInfo.songname + "&author=" + songInfo.singername + "&src=" + songInfo.url
     })
   },
   onLoad: function () {
