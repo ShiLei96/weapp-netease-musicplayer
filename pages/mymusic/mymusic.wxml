@@ -1,0 +1,23 @@
+<view style='border-bottom: 1px #ddd solid;text-align:left'>
+  <view style="float:left"><input placeholder="音乐" focus="true"/></view>
+  <view style="text-align:right"><image src="../res/searchR.png" mode="scaleToFill" style="width:30px;height:30px"></image></view>
+</view>
+
+<scroll-view style="width: 100%;" scroll-y="true" bindscroll="scroll">
+
+  <block wx:for-items="{{Song}}" wx:for-item="song">
+    <view class="song-item" bindtap="bindViewTap" data-id="{{song.id}}" data-title="{{song.title}}">
+      <view class="song-image">
+        <image src="{{song.images}}"></image>
+      </view>
+      <view class="song-info">
+        <view>
+          <text class="song-title">{{song.title}}</text>
+        </view>
+        <view>
+          <text class="song-singer">{{song.singer}}</text>
+        </view>
+      </view>
+    </view>
+  </block>
+</scroll-view>

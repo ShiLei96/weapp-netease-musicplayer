@@ -1,0 +1,28 @@
+<view class="blur" style="background-image:url({{poster}})" />
+
+<view class="player">
+  <view class="info">
+    <image animation="{{animationData}}" style="border-radius: 50%; height:240px; width:240px" src="{{poster}}" mode="scaleToFill"></image>
+  </view>
+  <view>
+    <view class="name">
+      <text>{{name}}</text>
+    </view>
+    <view class="author">
+      <text>{{author}}</text>
+    </view>
+  </view>
+
+  <view>
+    <view class="body-view">
+      <slider activeColor="#d81e06" backgroundColor="#dbdbdb" bindchange="sliderChange" bindchanging="sliderChanging" step="0.1" value="{{progressValue}}" />
+    </view>
+    <text class="playingTime">{{playingTime}}</text>
+    <text class="songTime">{{songTime}}</text>
+  </view>
+</view>
+<view style='text-align:center'>
+ <image src="{{prevBtn}}" class="controlBtn" bindtap="prevSong"></image>
+  <image src="{{playBtn}}" class="playBtn" bindtap="controlMusic"></image>
+   <image src="{{nextBtn}}" class="controlBtn" bindtap="nextSong"></image>
+</view>
