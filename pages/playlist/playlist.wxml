@@ -1,0 +1,20 @@
+  <!--index.wxml-->
+<view class="page">
+  <scroll-view style="width: 100%;" scroll-y="true" bindscroll="scroll">
+    <block wx:for-items="{{playlist.songlist}}" wx:for-item="song">
+      <view class="song-item" bindtap="playMusic" data-id="{{index}}" data-title="{{playlist.name}}">
+        <view class="song-image">
+          <image src="{{song.al.picUrl}}"></image>
+        </view>
+        <view class="song-info">
+          <view>
+            <text class="song-title">{{song.name}}</text>
+          </view>
+          <view>
+            <text class="song-singer">{{song.ar[0].name}}</text>
+          </view>
+        </view>
+      </view>
+    </block>
+  </scroll-view>
+</view>
