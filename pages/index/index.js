@@ -30,7 +30,7 @@ Page({
   },
   onReady:async function () {
     var hotlist
-    hotlist = await util.getHotlist("摇滚")
+    hotlist = await util.getHotlist("日语")
     this.setData({
       requestResult: hotlist
     })

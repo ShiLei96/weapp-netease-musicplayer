@@ -1,21 +1,15 @@
 //index.js
 //获取应用实例
 const app = getApp()
-
+var util = require('../../utils/util.js')
 Page({
   data: {
-    selectHideOrNot:"../res/pull.png",
+    selectHideOrNot: "../res/pull.png",
     showModal: false,
     showBlock: true,
-    motto: 'Hello World',
     userInfo: {},
     hasUserInfo: false,
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
-    imgUrls: [
-      'http://img02.tooopen.com/images/20150928/tooopen_sy_143912755726.jpg',
-      'http://img06.tooopen.com/images/20160818/tooopen_sy_175866434296.jpg',
-      'http://img06.tooopen.com/images/20160818/tooopen_sy_175833047715.jpg'
-    ],
     SongList: [
       {
         id: 1,
@@ -33,16 +27,7 @@ Page({
         images: 'https://www.allcdcovers.com/image_system/covers_th/6/f/6f105bb86df0dd2f6361efcf0fadf9a7.jpg'
       },
     ],
-    indicatorDots: true,
-    indicatorColor: "#dbdbdb",
-    indicatorActiveColor: "#d81e06",
-    autoplay: true,
-    interval: 5000,
-    duration: 500,
-    //windowHeight: 100,
-    toView: 'red',
-    scrollTop: 100,
-    scrollLeft: 0
+
   },
   upper: function (e) {
     console.log(e)
@@ -90,43 +75,58 @@ Page({
   /**
    * 对话框确认按钮点击事件
    */
-  onConfirm: function () {
+  onConfirm: function (e) {
     this.hideModal();
+    console.log(e)
+  },
+  onInputListName: function(e){
+    console.log(e)
+  },
+  onClick: function () {
+    console.log("showBlock：" + this.data.showBlock)
+    this.data.showBlock = !this.data.showBlock
+    this.setData({
+      showBlock: this.data.showBlock,
+      selectHideOrNot: this.data.showBlock ? "../res/pull.png" : "../res/pull2.png"
+    })
+
+
   },
 
-   onClick:function()
-   {
-     console.log("showBlock：" + this.data.showBlock)
-     this.data.showBlock= !this.data.showBlock
-     this.setData({
-       showBlock:this.data.showBlock,
-       selectHideOrNot :this.data.showBlock ? "../res/pull.png" : "../res/pull2.png"
-     })
-     
-    
-   },
-
-  bindSettingTap:function()
-  {
-   var that = this
+  bindSettingTap: function () {
+    var that = this
     wx.showActionSheet({
       itemList: ['创建新歌单', '歌单管理'],
       success: function (res) {
         //console.log(JSON.stringify(res))
         //console.log(res.tapIndex)
-       if(res.tapIndex==0)
-       {
-         that.showDialogBtn()
-       }
+        if (res.tapIndex == 0) {
+          that.showDialogBtn()
+        }
       }
     })
   },
 
-  bindHiddenTap:function()
-  {
+  bindHiddenTap: function () {
 
   },
+  onShow: function () {
+    console.log("onShow...")
+  },
+  onHide: function () {
+    console.log("onHide...")
+  },
+  onReady: async function () {
+    console.log("onReady...")
+    var hotlist
+    hotlist = await util.getUserPlaylist()
+    console.log(hotlist)
+    // this.setData({
+    //   requestResult: hotlist
+    // })
+  },
   onLoad: function () {
+    console.log("onLoad...")
     if (app.globalData.userInfo) {
       this.setData({
         userInfo: app.globalData.userInfo,
@@ -162,6 +162,6 @@ Page({
       hasUserInfo: true
     })
   },
-  
+
 })
 

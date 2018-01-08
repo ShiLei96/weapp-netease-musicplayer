@@ -21,22 +21,12 @@ Page({
     name: '',
     author: '',
   },
-  onLoad: function (options) {
+  onLoad: async function (options) {
     console.log("onLoad...")
     this.initBgAudioListManager();
 
     console.log("加载完毕")
-  },
-  onShow: function (options) {
-    console.log("onShow...")
-    animation.rotate(45).step()
-    this.setData({
-      animationData: animation.export()
-    })
-    //globalBgAudioManager.changeAudio()
-  },
-  onReady:async function (e) {
-    console.log("onReady...")
+
     this.startAnimation()
     console.log("globalBgAudioManager : ")
     console.log(globalBgAudioManager)
@@ -48,9 +38,20 @@ Page({
       name: song.name,
       author: song.author
     })
-    console.log("songid :　"+song.songId)
+    console.log("songid :　" + song.songId)
     var src = await util.getMusicUrl(song.songId)
     globalBgAudioManager.src = src
+  },
+  onShow: function (options) {
+    console.log("onShow...")
+    animation.rotate(45).step()
+    this.setData({
+      animationData: animation.export()
+    })
+    //globalBgAudioManager.changeAudio()
+  },
+  onReady: function (e) {
+    console.log("onReady...")
   },
   onHide: function () {
     console.log("onHide...")

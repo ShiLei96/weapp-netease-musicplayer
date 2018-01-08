@@ -13,6 +13,8 @@
     </view>
   </view>
 
+
+</view>
   <view>
     <view class="body-view">
       <slider activeColor="#d81e06" backgroundColor="#dbdbdb" bindchange="sliderChange" bindchanging="sliderChanging" step="0.1" value="{{progressValue}}" />
@@ -20,7 +22,6 @@
     <text class="playingTime">{{playingTime}}</text>
     <text class="songTime">{{songTime}}</text>
   </view>
-</view>
 <view style='text-align:center'>
  <image src="{{prevBtn}}" class="controlBtn" bindtap="prevMusic"></image>
   <image src="{{playBtn}}" class="playBtn" bindtap="controlMusic"></image>
