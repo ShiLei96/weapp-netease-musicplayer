@@ -17,22 +17,13 @@ Page({
     songTime: "",
     progressValue: 0,
     animationData: {},
-    poster: 'http://y.gtimg.cn/music/photo_new/T002R300x300M000003rsKF44GyaSk.jpg?max_age=2592000',
-    name: '此时此刻',
-    author: '许巍',
-    src: 'http://m10.music.126.net/20180105104237/8365022e20cfb07c4e596a9755800513/ymusic/1625/2b43/e004/526a7893269ab8699fd0fb8cd2fe7948'
-
+    poster: '',
+    name: '',
+    author: '',
   },
   onLoad: function (options) {
     console.log("onLoad...")
-    this.setData({
-      poster: options.poster,
-      name: options.name,
-      author: options.author,
-      src: "http://m10.music.126.net/20180105104237/8365022e20cfb07c4e596a9755800513/ymusic/1625/2b43/e004/526a7893269ab8699fd0fb8cd2fe7948.mp3"
-    })
     this.initBgAudioListManager();
-
 
     console.log("加载完毕")
   },
@@ -47,15 +38,19 @@ Page({
   onReady:async function (e) {
     console.log("onReady...")
     this.startAnimation()
-
-    //console.log("开始播放 src:" + globalCourseAudioListManager.audioList.song[globalCourseAudioListManager.currentIndex].src);
-    console.log("globalBgAudioManager : "+globalBgAudioManager)
-    console.log("globalCourseAudioListManager : "+globalCourseAudioListManager)
-    var src = await util.getMusicUrl(418603066)
-    console.log(src)
+    console.log("globalBgAudioManager : ")
+    console.log(globalBgAudioManager)
+    console.log("globalCourseAudioListManager : ")
+    console.log(globalCourseAudioListManager)
+    var song = await globalCourseAudioListManager.getCurrentAudio()
+    this.setData({
+      poster: song.poster,
+      name: song.name,
+      author: song.author
+    })
+    console.log("songid :　"+song.songId)
+    var src = await util.getMusicUrl(song.songId)
     globalBgAudioManager.src = src
-    //globalBgAudioManager.src = globalCourseAudioListManager.audioList.song[globalCourseAudioListManager.currentIndex].src
-    //globalBgAudioManager.src = this.data.src
   },
   onHide: function () {
     console.log("onHide...")
@@ -64,64 +59,6 @@ Page({
     console.log("onUnload...")
     n = 1
     clearTimeout(varTimeout)
-  },
-  initBgAudioListManager: function () {
-    globalBgAudioManager.onPlay(() => {
-      console.log("duration : " + globalBgAudioManager.duration)
-      var duration = parseInt(globalBgAudioManager.duration / 60) + ":" + parseInt(globalBgAudioManager.duration % 60);
-      if (globalBgAudioManager.duration / 60 < 10)
-        duration = "0" + duration
-      console.log(duration);
-      this.setData({
-        songTime: duration
-      })
-    })
-
-    globalBgAudioManager.onCanplay(() => {
-      console.log("canplay")
-    })
-
-    globalBgAudioManager.onWaiting(() => {
-      wx.showLoading({
-        title: '音频加载中…'
-      });
-      globalBgAudioManager.isWaiting = true;
-      console.log("onWaiting...")
-    })
-
-    globalBgAudioManager.onError((e) => {
-      console.log("onError : " + JSON.stringify(e))
-
-    })
-
-    globalBgAudioManager.onTimeUpdate(() => {
-      if (globalBgAudioManager.isWaiting) {
-        globalBgAudioManager.isWaiting = false;
-        setTimeout(() => {
-          wx.hideLoading();
-        }, 300)
-      }
-
-      var rate = 100 * globalBgAudioManager.currentTime / globalBgAudioManager.duration
-      var mm = parseInt(globalBgAudioManager.currentTime / 60)
-      var ss = parseInt(globalBgAudioManager.currentTime % 60)
-      if (mm < 10)
-        mm = "0" + mm
-      if (ss < 10)
-        ss = "0" + ss
-      var currentTime = mm + ":" + ss
-      this.setData({
-        playingTime: currentTime,
-      })
-      if (!this.data.isSliding) {
-        this.setData({
-          progressValue: rate
-        })
-      }
-    })
-    globalBgAudioManager.changeAudio = function () {
-      console.log("changeAudio")
-    }
   },
   //动画相关函数
   rotatePic: function () {
@@ -152,6 +89,28 @@ Page({
       })
     }
   },
+  nextMusic:async function(){
+    var song = await globalCourseAudioListManager.getNextAudio()
+    this.setData({
+      poster: song.poster,
+      name: song.name,
+      author: song.author
+    })
+    var src = await util.getMusicUrl(song.songId)
+    console.log("下一首："+"songid :　"+song.songId +"src : "+src)
+    globalBgAudioManager.src = src
+  },
+  prevMusic: async function(){
+    var song = await globalCourseAudioListManager.getPrevAudio()
+    this.setData({
+      poster: song.poster,
+      name: song.name,
+      author: song.author
+    })
+    var src = await util.getMusicUrl(song.songId)
+    console.log("上一首："+"songid :　"+song.songId +"src : "+src)
+    globalBgAudioManager.src = src
+  },
   sliderChanging: function () {
     this.setData({
       isSliding: true
@@ -165,5 +124,79 @@ Page({
     this.setData({
       isSliding: false
     })
-  }
+  },
+
+  //播放器初始化
+  initBgAudioListManager: function () {
+    globalBgAudioManager.onPlay(() => {
+      console.log("duration : " + globalBgAudioManager.duration)
+      var mm = parseInt(globalBgAudioManager.duration / 60)
+      var ss = parseInt(globalBgAudioManager.duration % 60)
+      if (mm < 10)
+        mm = "0" + mm
+      if (ss < 10)
+        ss = "0" + ss
+      var duration = mm + ":" + ss;
+      console.log(duration);
+      this.setData({
+        songTime: duration
+      })
+    })
+
+    globalBgAudioManager.onCanplay(() => {
+      console.log("canplay")
+    })
+
+    globalBgAudioManager.onWaiting(() => {
+      console.log("onWaiting...")
+      wx.showLoading({
+        title: '音频加载中…'
+      });
+      globalBgAudioManager.isWaiting = true;
+    })
+
+    globalBgAudioManager.onError((e) => {
+      console.log("onError : " + JSON.stringify(e))
+    })
+
+    globalBgAudioManager.onEnded((e) => {
+      console.log("onEnded...")
+      this.nextMusic()
+    })
+
+    globalBgAudioManager.onStop((e) =>{
+      console.log("onStop...")
+      console.log(e)
+    })
+
+    globalBgAudioManager.onTimeUpdate(() => {
+      if (globalBgAudioManager.isWaiting) {
+        globalBgAudioManager.isWaiting = false;
+        setTimeout(() => {
+          wx.hideLoading();
+        }, 300)
+      }
+
+      //更新播放进度
+      var rate = 100 * globalBgAudioManager.currentTime / globalBgAudioManager.duration
+      var mm = parseInt(globalBgAudioManager.currentTime / 60)
+      var ss = parseInt(globalBgAudioManager.currentTime % 60)
+      if (mm < 10)
+        mm = "0" + mm
+      if (ss < 10)
+        ss = "0" + ss
+      var currentTime = mm + ":" + ss
+      this.setData({
+        playingTime: currentTime,
+      })
+      if (!this.data.isSliding) {
+        this.setData({
+          progressValue: rate
+        })
+      }
+    })
+    globalBgAudioManager.changeAudio = function () {
+      console.log("changeAudio")
+    }
+  },
 })

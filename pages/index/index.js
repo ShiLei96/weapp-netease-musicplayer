@@ -30,7 +30,7 @@ Page({
   },
   onReady:async function () {
     var hotlist
-    hotlist = await util.getHotlist("")
+    hotlist = await util.getHotlist("摇滚")
     this.setData({
       requestResult: hotlist
     })
@@ -42,9 +42,7 @@ Page({
   lower: function (e) {
     console.log(e)
   },
-  scroll: function (e) {
-    console.log(e)
-  },
+
 
   showInput: function () {
     this.setData({
@@ -74,7 +72,7 @@ Page({
     var songList = this.data.requestResult[parseInt(e.currentTarget.dataset.id)]
     console.log(songList)
     wx.navigateTo({
-      url: '../playlist/playlist?playlistId='+songList.id +"&imgUrl="+songList.coverImgUrl+"&name="+songList.name
+      url: '../playlist/playlist?playlistId='+songList.id+'&in=0'
     })
   },
   onLoad: function () {

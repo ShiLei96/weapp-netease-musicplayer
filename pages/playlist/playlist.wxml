@@ -1,6 +1,32 @@
   <!--index.wxml-->
-<view class="page">
-  <scroll-view style="width: 100%;" scroll-y="true" bindscroll="scroll">
+
+   
+    <view class="songlist-item" data-id="{{songlist.id}}" data-title="{{songlist.title}}">
+      <view class="songlist-image">
+        <image src="{{playlist.imgUrl}}" style="width:100px;height:100px;padding-left:30px;padding-top:30px">  </image>
+      </view>
+      <view class="songlist-info" style="padding-left:80px;padding-top:30px">
+        <view>
+          <text class="songlist-title">{{playlist.name}}</text>
+        </view>
+      </view>
+      </view>
+<block>
+ <view style='float:left' bindtap="playClick" style="padding-top:70px;padding-bottom:10px;border-bottom:1px #ddd solid" >
+
+<image src="../res/playlistPlay.png" mode="scaleToFill" style="width:30px;height:30px;padding-left:15px;float:left" ></image>
+<text style="float:left;padding-left:7px">{{"播放全部"}}{{"(共"}}{{playlist.songlist.length}}{{"首)"}}</text>
+<image  src="../res/MutiSelect.png" mode="scaleToFill"
+bindtap="bindMutiSelect"
+style="text-align:right;width:30px;height:30px;padding-left:130px"></image>
+</view>
+
+
+
+
+
+</block>
+
     <block wx:for-items="{{playlist.songlist}}" wx:for-item="song">
       <view class="song-item" bindtap="playMusic" data-id="{{index}}" data-title="{{playlist.name}}">
         <view class="song-image">
@@ -16,5 +42,4 @@
         </view>
       </view>
     </block>
-  </scroll-view>
-</view>
+

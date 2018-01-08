@@ -4,6 +4,9 @@ const app = getApp()
 
 Page({
   data: {
+    selectHideOrNot:"../res/pull.png",
+    showModal: false,
+    showBlock: true,
     motto: 'Hello World',
     userInfo: {},
     hasUserInfo: false,
@@ -13,23 +16,20 @@ Page({
       'http://img06.tooopen.com/images/20160818/tooopen_sy_175866434296.jpg',
       'http://img06.tooopen.com/images/20160818/tooopen_sy_175833047715.jpg'
     ],
-    Song: [
+    SongList: [
       {
         id: 1,
-        title: "当你1",
-        singer: "林俊杰1",
+        title: "歌单1",
         images: 'https://www.allcdcovers.com/image_system/covers_th/0/2/02207cc7c98cd5a5bd8092786f171cc0.jpg'
       },
       {
         id: 2,
-        title: "当你2",
-        singer: "林俊杰2",
+        title: "歌单2",
         images: 'https://www.allcdcovers.com/image_system/covers_th/7/5/7586f74beb492fbd87b085c90207afc5.jpg'
       },
       {
         id: 3,
-        title: "当你3",
-        singer: "林俊杰3",
+        title: "歌单3",
         images: 'https://www.allcdcovers.com/image_system/covers_th/6/f/6f105bb86df0dd2f6361efcf0fadf9a7.jpg'
       },
     ],
@@ -56,8 +56,75 @@ Page({
   //事件处理函数
   bindViewTap: function () {
     wx.navigateTo({
-      url: '../musicPlayer/musicPlayer?poster=' + songInfo.albumpic_big + "&name=" + songInfo.songname + "&author=" + songInfo.singername + "&src=" + songInfo.url
+      url: '../musicPlayer/musicPlayer'
     })
+  },
+
+  /**
+   * 弹窗
+   */
+  showDialogBtn: function () {
+    this.setData({
+      showModal: true
+    })
+  },
+  /**
+   * 弹出框蒙层截断touchmove事件
+   */
+  preventTouchMove: function () {
+  },
+  /**
+   * 隐藏模态对话框
+   */
+  hideModal: function () {
+    this.setData({
+      showModal: false
+    });
+  },
+  /**
+   * 对话框取消按钮点击事件
+   */
+  onCancel: function () {
+    this.hideModal();
+  },
+  /**
+   * 对话框确认按钮点击事件
+   */
+  onConfirm: function () {
+    this.hideModal();
+  },
+
+   onClick:function()
+   {
+     console.log("showBlock：" + this.data.showBlock)
+     this.data.showBlock= !this.data.showBlock
+     this.setData({
+       showBlock:this.data.showBlock,
+       selectHideOrNot :this.data.showBlock ? "../res/pull.png" : "../res/pull2.png"
+     })
+     
+    
+   },
+
+  bindSettingTap:function()
+  {
+   var that = this
+    wx.showActionSheet({
+      itemList: ['创建新歌单', '歌单管理'],
+      success: function (res) {
+        //console.log(JSON.stringify(res))
+        //console.log(res.tapIndex)
+       if(res.tapIndex==0)
+       {
+         that.showDialogBtn()
+       }
+      }
+    })
+  },
+
+  bindHiddenTap:function()
+  {
+
   },
   onLoad: function () {
     if (app.globalData.userInfo) {
@@ -94,5 +161,7 @@ Page({
       userInfo: e.detail.userInfo,
       hasUserInfo: true
     })
-  }
+  },
+  
 })
+

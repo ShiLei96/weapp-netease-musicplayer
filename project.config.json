@@ -22,7 +22,14 @@
 		},
 		"miniprogram": {
 			"current": -1,
-			"list": []
+			"list": [
+				{
+					"id": -1,
+					"name": "musicPlayer",
+					"pathName": "pages/musicPlayer/musicPlayer",
+					"query": ""
+				}
+			]
 		}
 	}
 }

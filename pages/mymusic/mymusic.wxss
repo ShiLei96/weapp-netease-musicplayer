@@ -1,4 +1,4 @@
-/**index.wxss**/
+/**mymusic.wxss**/
 .userinfo {
   display: flex;
   flex-direction: column;
@@ -59,39 +59,41 @@ page{
   line-height: 1.5;
   color: #333;
 }
-.song-item{
+.songlist-item{
   position: relative;
   padding-top: 5px;
   display: flex;
+  width:100%
+ 
 }
-.song-image{
+.songlist-image{
   width: 80px;
   height: 80px
 }
-.song-image image{
+.songlist-image image{
   width: 100%;
   height: 100%;
 }
-.song-info{
+.songlist-info{
   padding-left: 10px;
   flex: 1;
   border-bottom: 1px #ddd solid
 }
-.song-info view{
+.songlist-info view{
   padding-bottom: 10px;
 }
-.song-info .label{
+.songlist-info .label{
   margin-right: 5px;
   color: #666;
 }
-.song-info .rating{
+.songlist-info .rating{
   color: #e09015;
 }
-.song-title{
+.songlist-title{
  font-size: 18px;
  margin-right: 10px;
 }
-.song-singer{
+.songlist-num{
   padding-top: 20px;
   font-size: 16px;
   color: #999;
@@ -137,3 +139,91 @@ page{
   color: #666;
   text-align: center;
 }
+
+.show-btn {
+  margin-top: 100rpx;
+  color: #22cc22;
+}
+
+.modal-mask {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: #000;
+  opacity: 0.5;
+  overflow: hidden;
+  z-index: 9000;
+  color: #fff;
+}
+
+.modal-dialog {
+  width: 540rpx;
+  overflow: hidden;
+  position: fixed;
+  top: 50%;
+  left: 0;
+  z-index: 9999;
+  background: #f9f9f9;
+  margin: -180rpx 105rpx;
+  border-radius: 36rpx;
+}
+
+.modal-title {
+  padding-top: 50rpx;
+  font-size: 36rpx;
+  color: #030303;
+  text-align: center;
+}
+
+.modal-content {
+  padding: 50rpx 32rpx;
+}
+
+.modal-input {
+  display: flex;
+  background: #fff;
+  border: 2rpx solid #ddd;
+  border-radius: 4rpx;
+  font-size: 28rpx;
+}
+
+
+.input {
+  width: 100%;
+  height: 82rpx;
+  font-size: 28rpx;
+  line-height: 28rpx;
+  padding: 0 20rpx;
+  box-sizing: border-box;
+  color: #333;
+}
+
+input-holder {
+  color: #666;
+  font-size: 28rpx;
+}
+
+.modal-footer {
+  display: flex;
+  flex-direction: row;
+  height: 86rpx;
+  border-top: 1px solid #dedede;
+  font-size: 34rpx;
+  line-height: 86rpx;
+}
+
+.btn-cancel {
+  width: 50%;
+  color: #666;
+  text-align: center;
+  border-right: 1px solid #dedede;
+}
+
+.btn-confirm {
+  width: 50%;
+  color: #ec5300;
+  text-align: center;
+}
+

@@ -6,9 +6,6 @@ App({
     this.backgroundAudioManager = wx.getBackgroundAudioManager()
     this.backgroundAudioManager.isWaiting = false
     this.backgroundAudioManager.audioId = -1
-    this.backgroundAudioManager.changeAudio = function () {
-     }
-
     // 展示本地存储能力
     var logs = wx.getStorageSync('logs') || []
     logs.unshift(Date.now())
@@ -44,15 +41,22 @@ App({
 
   courseAudioListManager: {
     getPrevAudio: function () {
-      var readyPlayIndex = this.currentIndex == 0 ? Object.key(this.audioList.song).length - 1 : this.currentIndex + 1
-      return this.audioList.song[readyPlayIndex]
+      var readyPlayIndex = this.currentIndex == 0 ? this.audioList.length - 1 : this.currentIndex - 1
+      this.changeCurrentAudioByIndex(readyPlayIndex)
+      return this.audioList[readyPlayIndex]
     },
     getNextAudio: function () {
-      var readyPlayIndex = this.currentIndex == Object.key(this.audioList.song).length - 1 ? 0 : this.currentIndex - 1
-      return this.audioList.song[readyPlayIndex]
+      console.log("audioList length : "+this.audioList.length) //242
+      console.log("currentIndex : "+this.currentIndex)
+      var readyPlayIndex = this.currentIndex == this.audioList.length - 1 ? 0 : this.currentIndex + 1
+      console.log("nextIndex ："+ readyPlayIndex)
+      this.changeCurrentAudioByIndex(readyPlayIndex)
+      return this.audioList[readyPlayIndex]
     },
     getCurrentAudio: function () {
-      return this.audioList.song[currentIndex]
+      console.log("this currentindex : "+this.currentIndex)
+      console.log(this.audioList)
+      return this.audioList[this.currentIndex]
     },
     changeCurrentAudioByIndex(index) {
       this.currentIndex = index
@@ -62,23 +66,7 @@ App({
     },
     courseInfo: {
     },
-    audioList: {
-      song: [{
-        poster: 'http://p1.music.126.net/6y-UleORITEDbvrOLV0Q8A==/5639395138885805.jpg',
-        name: '交织together',
-        author: '泠鸢yousa',
-        src: 'http://m10.music.126.net/20180107002006/b37807fdddd19d01d0ac999214a7c981/ymusic/1625/2b43/e004/526a7893269ab8699fd0fb8cd2fe7948.mp3',
-        songId:''
-      },
-      {
-        poster: 'http://y.gtimg.cn/music/photo_new/T002R300x300M000003rsKF44GyaSk.jpg?max_age=2592000',
-        name: '一日都市 （人声本家）',
-        author: 'Hanser',
-        src: 'http://m10.music.126.net/20180107002006/b37807fdddd19d01d0ac999214a7c981/ymusic/1625/2b43/e004/526a7893269ab8699fd0fb8cd2fe7948.mp3',
-        songId:''
-      },
-      ]
-    },
+    audioList: {},
     currentIndex: 0,
     playMode: config.playMode.order
   },

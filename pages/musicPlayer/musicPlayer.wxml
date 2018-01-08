@@ -22,7 +22,7 @@
   </view>
 </view>
 <view style='text-align:center'>
- <image src="{{prevBtn}}" class="controlBtn" bindtap="prevSong"></image>
+ <image src="{{prevBtn}}" class="controlBtn" bindtap="prevMusic"></image>
   <image src="{{playBtn}}" class="playBtn" bindtap="controlMusic"></image>
-   <image src="{{nextBtn}}" class="controlBtn" bindtap="nextSong"></image>
+   <image src="{{nextBtn}}" class="controlBtn" bindtap="nextMusic"></image>
 </view>

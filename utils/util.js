@@ -103,4 +103,48 @@ var getPlaylistDetail = function(playlistId){
   })
   return p
 }
-module.exports = { formatTime, showBusy, showSuccess, showModel, getMusicUrl, getHotlist, getPlaylistDetail }
+
+//获取用户创建的歌单 userId为open_id 返回值为listId 数组
+var getUserHotlist = function (userId) {
+  var p = new promise(function (resolve, reject){
+    qcloud.request({
+      url: `${config.service.host}/weapp/query/getList?userid=` + userId,
+      login: false,
+      success(result) {
+        var j = JSON.stringify(result.data)
+        var json = JSON.parse(j)
+        console.log("请求URL...")
+        console.log(json.data.msg)
+        resolve(json.data.msg)
+      },
+      fail(error) {
+        console.log('request fail', error);
+      }
+    })
+  })
+  return p
+}
+
+//获取用户创建歌单详情 playlistId为歌单Id 返回值为songId 数组
+var getUserPlaylistDetail = function(playlistId){
+    var p = new promise(function (resolve, reject){
+    qcloud.request({
+      url: `${config.service.host}/weapp/query/getSong?listid=` + playlistId,
+      login: false,
+      success(result) {
+        var j = JSON.stringify(result.data)
+        var json = JSON.parse(j)
+        console.log("请求playlist-URL...")
+        console.log(json.data)
+        resolve(json.data)
+      },
+      fail(error) {
+        console.log('request fail', error);
+      }
+    })
+  })
+  return p
+}
+
+
+module.exports = { formatTime, showBusy, showSuccess, showModel, getMusicUrl, getHotlist, getPlaylistDetail, getUserHotlist,getUserPlaylistDetail }
