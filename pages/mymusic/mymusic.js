@@ -9,25 +9,8 @@ Page({
     showBlock: true,
     userInfo: {},
     hasUserInfo: false,
-    canIUse: wx.canIUse('button.open-type.getUserInfo'),
-    SongList: [
-      {
-        id: 1,
-        title: "歌单1",
-        images: 'https://www.allcdcovers.com/image_system/covers_th/0/2/02207cc7c98cd5a5bd8092786f171cc0.jpg'
-      },
-      {
-        id: 2,
-        title: "歌单2",
-        images: 'https://www.allcdcovers.com/image_system/covers_th/7/5/7586f74beb492fbd87b085c90207afc5.jpg'
-      },
-      {
-        id: 3,
-        title: "歌单3",
-        images: 'https://www.allcdcovers.com/image_system/covers_th/6/f/6f105bb86df0dd2f6361efcf0fadf9a7.jpg'
-      },
-    ],
-
+    SongList:[],
+    newPlayListName:''
   },
   upper: function (e) {
     console.log(e)
@@ -39,9 +22,12 @@ Page({
     console.log(e)
   },
   //事件处理函数
-  bindViewTap: function () {
+  bindViewTap:async function (e) {
+    console.log(e)
+
+
     wx.navigateTo({
-      url: '../musicPlayer/musicPlayer'
+      url: '../playlist/playlist?playlistId=' + e.currentTarget.dataset.id + '&in=1'
     })
   },
 
@@ -75,12 +61,19 @@ Page({
   /**
    * 对话框确认按钮点击事件
    */
-  onConfirm: function (e) {
+  onConfirm:async function (e) {
     this.hideModal();
     console.log(e)
+    console.log(app.globalData.userInfo)
+    console.log(this.data.newPlayListName)
+    await util.createUserPlaylist(app.globalData.userInfo.openId, this.data.newPlayListName)
+    this.setUserPlaylist()
   },
   onInputListName: function(e){
     console.log(e)
+    this.setData({
+      newPlayListName: e.detail.value
+    })
   },
   onClick: function () {
     console.log("showBlock：" + this.data.showBlock)
@@ -89,10 +82,7 @@ Page({
       showBlock: this.data.showBlock,
       selectHideOrNot: this.data.showBlock ? "../res/pull.png" : "../res/pull2.png"
     })
-
-
   },
-
   bindSettingTap: function () {
     var that = this
     wx.showActionSheet({
@@ -106,62 +96,27 @@ Page({
       }
     })
   },
-
-  bindHiddenTap: function () {
-
-  },
   onShow: function () {
     console.log("onShow...")
   },
   onHide: function () {
     console.log("onHide...")
   },
-  onReady: async function () {
+  onReady: function () {
     console.log("onReady...")
-    var hotlist
-    hotlist = await util.getUserPlaylist()
-    console.log(hotlist)
-    // this.setData({
-    //   requestResult: hotlist
-    // })
+    this.setUserPlaylist()
   },
-  onLoad: function () {
-    console.log("onLoad...")
-    if (app.globalData.userInfo) {
-      this.setData({
-        userInfo: app.globalData.userInfo,
-        hasUserInfo: true
-      })
-    } else if (this.data.canIUse) {
-      // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
-      // 所以此处加入 callback 以防止这种情况
-      app.userInfoReadyCallback = res => {
-        this.setData({
-          userInfo: res.userInfo,
-          hasUserInfo: true
-        })
-      }
-    } else {
-      // 在没有 open-type=getUserInfo 版本的兼容处理
-      wx.getUserInfo({
-        success: res => {
-          app.globalData.userInfo = res.userInfo
-          this.setData({
-            userInfo: res.userInfo,
-            hasUserInfo: true
-          })
-        }
-      })
-    }
-  },
-  getUserInfo: function (e) {
-    console.log(e)
-    app.globalData.userInfo = e.detail.userInfo
+  setUserPlaylist:async function(){
+    var userPlaylist
+    userPlaylist = await util.getUserPlaylist(app.globalData.userInfo.openId)
+    console.log(userPlaylist)
     this.setData({
-      userInfo: e.detail.userInfo,
-      hasUserInfo: true
+      SongList: userPlaylist
     })
   },
-
+  onLoad: function () {
+    console.log("onLoad....")
+    console.log(app.globalData.userInfo)
+  },
 })
 

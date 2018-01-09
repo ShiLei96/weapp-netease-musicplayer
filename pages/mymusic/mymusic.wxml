@@ -14,18 +14,18 @@ style="width:20px;height:20px;padding-right:10px"></image>
 
 <view wx:if="{{showBlock}}">
 <block wx:for-items="{{SongList}}" wx:for-item="songlist">
-    <view class="songlist-item" bindtap="bindViewTap" data-id="{{songlist.id}}" data-title="{{songlist.title}}">
+    <view class="songlist-item" bindtap="bindViewTap" data-id="{{songlist.listid}}" data-title="{{songlist.title}}">
       <view class="songlist-image">
-        <image src="{{songlist.images}}"></image>
+        <image src="{{}}"></image>
       </view>
       <view class="songlist-info">
         <view>
-          <text class="songlist-title">{{songlist.title}}</text>
+          <text class="songlist-title">{{songlist.listname}}</text>
           <image src="../res/point.png" mode="scaleToFill" style="float:right;width:20px;height:20px;padding-top:20px">
           </image>
         </view>
          <view>
-          <text class="songlist-num">{{"共"}}{{songlist.num}}{{"首"}}</text>
+          <text class="songlist-num">{{"共"}}{{songlist.count}}{{"首"}}</text>
         </view>
      
       </view>

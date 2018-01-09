@@ -15,6 +15,41 @@ Page({
       'http://img06.tooopen.com/images/20160818/tooopen_sy_175866434296.jpg',
       'http://img06.tooopen.com/images/20160818/tooopen_sy_175833047715.jpg'
     ],
+    objectMultiArray: [
+      [
+        {
+          id: 0,
+          name: '华语'
+        },
+        {
+          id: 1,
+          name: '欧美'
+        }
+
+      ], [
+        {
+          id: 0,
+          name: '影视原声'
+        },
+        {
+          id: 1,
+          name: 'ACG'
+        },
+        {
+          id: 2,
+          name: '校园'
+        },
+        {
+          id: 3,
+          name: '游戏'
+        },
+        {
+          id: 4,
+          name: '网络歌曲'
+        }
+      ]
+    ],
+    multiIndex2: [0, 0],
     requestResult: "",
     indicatorDots: true,
     indicatorColor: "#dbdbdb",
@@ -26,9 +61,10 @@ Page({
     scrollTop: 100,
     scrollLeft: 0,
     inputShowed: false,
-    inputVal: ""
+    inputVal: "",
+    listTag: "推荐歌单"
   },
-  onReady:async function () {
+  onReady: async function () {
     var hotlist
     hotlist = await util.getHotlist("日语")
     this.setData({
@@ -72,36 +108,75 @@ Page({
     var songList = this.data.requestResult[parseInt(e.currentTarget.dataset.id)]
     console.log(songList)
     wx.navigateTo({
-      url: '../playlist/playlist?playlistId='+songList.id+'&in=0'
+      url: '../playlist/playlist?playlistId=' + songList.id + '&in=0'
     })
   },
+  bindMultiPickerChange: function (e) {
+    console.log('picker发送选择改变，携带值为', e.detail.value)
+    this.setData({
+      multiIndex2: e.detail.value
+    })
+  },
+  bindMultiPickerColumnChange: function (e) {
+    console.log('修改的列为', e.detail.column, '，值为', e.detail.value);
+    var data = {
+      objectMultiArray: this.data.objectMultiArray,
+      multiIndex2: this.data.multiIndex2
+    };
+    data.multiIndex2[e.detail.column] = e.detail.value;
+    switch (e.detail.column) {
+      case 0:
+        switch (data.multiIndex2[0]) {
+          case 0:
+            data.objectMultiArray[1] = [
+              { id: 0, name: '影视原声' },
+              { id: 1, name: 'ACG' },
+              { id: 2, name: '校园' },
+              { id: 3, name: '游戏' },
+              { id: 4, name: '网络歌曲' }
+            ];
+            break;
+        }
+        data.multiIndex2[1] = 0;
+        // data.multiIndex[2] = 0;
+        break;
+    }
+    this.setData(data);
+  },
   onLoad: function () {
-    if (app.globalData.userInfo) {
-      this.setData({
-        userInfo: app.globalData.userInfo,
-        hasUserInfo: true
-      })
-    } else if (this.data.canIUse) {
-      // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
-      // 所以此处加入 callback 以防止这种情况
-      app.userInfoReadyCallback = res => {
-        this.setData({
-          userInfo: res.userInfo,
-          hasUserInfo: true
-        })
-      }
-    } else {
-      // 在没有 open-type=getUserInfo 版本的兼容处理
-      wx.getUserInfo({
-        success: res => {
-          app.globalData.userInfo = res.userInfo
-          this.setData({
-            userInfo: res.userInfo,
-            hasUserInfo: true
+    var that = this
+    // 调用登录接口
+    qcloud.login({
+      success(result) {
+        if (result) {
+          util.showSuccess('登录成功')
+          app.globalData.userInfo = result
+
+        } else {
+          // 如果不是首次登录，不会返回用户信息，请求用户信息接口获取
+          qcloud.request({
+            url: config.service.requestUrl,
+            login: true,
+            success(result) {
+              util.showSuccess('登录成功')
+              console.log(result.data.data)
+              app.globalData.userInfo = result.data.data
+              console.log(app.globalData.userInfo)
+            },
+
+            fail(error) {
+              util.showModel('请求失败', error)
+              console.log('request fail', error)
+            }
           })
         }
-      })
-    }
+      },
+
+      fail(error) {
+        util.showModel('登录失败', error)
+        console.log('登录失败', error)
+      }
+    })
   },
   getUserInfo: function (e) {
     console.log(e)

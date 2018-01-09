@@ -11,13 +11,20 @@ Page({
   onLoad: async function (options) {
     console.log("onLoad...")
 
-    var _playlist
+    var _playlist = new Object()
     var _in = options.in
     console.log("in=" + _in)
     if (_in == 0) {
       _playlist = await util.getPlaylistDetail(options.playlistId)
     } else if (_in == 1) {
-      _playlist = await util.getPlaylistDetail(options.playlistId)
+      __playlist = new Array()
+      var songIds = await util.getUserPlaylistDetail(options.playlistId)
+      console.log(songIds)
+      for (index in songIds) {
+        __playlist[index] = await util.getMusicDetail(songIds[index].songid)
+      }
+      console.log(__playlist)
+      _playlist.songlist = __playlist
     }
 
 
