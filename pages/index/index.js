@@ -4,6 +4,21 @@ const app = getApp()
 var qcloud = require('../../vendor/wafer2-client-sdk/index')
 var config = require('../../config')
 var util = require('../../utils/util.js')
+var column1 = new Array(
+  { id: 0, name: '语种' },
+  { id: 1, name: '风格' })
+var column2 = new Array([
+  { id: 0, name: '华语' },
+  { id: 1, name: '欧美' },
+  { id: 2, name: '日语' },
+  { id: 3, name: '韩语' },
+  { id: 4, name: '粤语' }],
+  [{ id: 0, name: '流行' },
+  { id: 1, name: '摇滚' },
+  { id: 2, name: '古风' },
+  { id: 3, name: '民谣' },
+  { id: 4, name: '电子' },
+  { id: 5, name: '轻音乐' }])
 Page({
   data: {
     motto: 'Hello World',
@@ -15,40 +30,7 @@ Page({
       'http://img06.tooopen.com/images/20160818/tooopen_sy_175866434296.jpg',
       'http://img06.tooopen.com/images/20160818/tooopen_sy_175833047715.jpg'
     ],
-    objectMultiArray: [
-      [
-        {
-          id: 0,
-          name: '华语'
-        },
-        {
-          id: 1,
-          name: '欧美'
-        }
-
-      ], [
-        {
-          id: 0,
-          name: '影视原声'
-        },
-        {
-          id: 1,
-          name: 'ACG'
-        },
-        {
-          id: 2,
-          name: '校园'
-        },
-        {
-          id: 3,
-          name: '游戏'
-        },
-        {
-          id: 4,
-          name: '网络歌曲'
-        }
-      ]
-    ],
+    objectMultiArray: [],
     multiIndex2: [0, 0],
     requestResult: "",
     indicatorDots: true,
@@ -70,6 +52,13 @@ Page({
     this.setData({
       requestResult: hotlist
     })
+
+
+
+    this.setData({
+      objectMultiArray: [column1, column2[0]]
+    })
+
   },
 
   upper: function (e) {
@@ -112,36 +101,28 @@ Page({
     })
   },
   bindMultiPickerChange: function (e) {
+    console.log(e)
     console.log('picker发送选择改变，携带值为', e.detail.value)
     this.setData({
-      multiIndex2: e.detail.value
+      multiIndex2: [0,0]
     })
   },
   bindMultiPickerColumnChange: function (e) {
+    console.log(e)
     console.log('修改的列为', e.detail.column, '，值为', e.detail.value);
-    var data = {
-      objectMultiArray: this.data.objectMultiArray,
-      multiIndex2: this.data.multiIndex2
-    };
-    data.multiIndex2[e.detail.column] = e.detail.value;
-    switch (e.detail.column) {
-      case 0:
-        switch (data.multiIndex2[0]) {
-          case 0:
-            data.objectMultiArray[1] = [
-              { id: 0, name: '影视原声' },
-              { id: 1, name: 'ACG' },
-              { id: 2, name: '校园' },
-              { id: 3, name: '游戏' },
-              { id: 4, name: '网络歌曲' }
-            ];
-            break;
-        }
-        data.multiIndex2[1] = 0;
-        // data.multiIndex[2] = 0;
-        break;
+    var column
+    if (e.detail.column == 0) {
+      switch (e.detail.value) {
+        case 0:
+          column = new Array(column1, column2[0]);
+          break;
+        case 1:
+          column = new Array(column1, column2[1])
+      }
     }
-    this.setData(data);
+    this.setData({
+      objectMultiArray: column
+    });
   },
   onLoad: function () {
     var that = this
