@@ -21,8 +21,6 @@ courseAudioListManager: {
     return this.audioList[readyPlayIndex]
   },
   getNextAudio: function () {
-    console.log("audioList length : " + this.audioList.length) //242
-    console.log("currentIndex : " + this.currentIndex)
     var readyPlayIndex = this.currentIndex == this.audioList.length - 1 ? 0 : this.currentIndex + 1
     console.log("nextIndex ：" + readyPlayIndex)
     this.changeCurrentAudioByIndex(readyPlayIndex)
@@ -30,7 +28,6 @@ courseAudioListManager: {
   },
   getCurrentAudio: function () {
     console.log("this currentindex : " + this.currentIndex)
-    console.log(this.audioList)
     return this.audioList[this.currentIndex]
   },
   changeCurrentAudioByIndex(index) {
@@ -48,6 +45,12 @@ courseAudioListManager: {
 
 globalData: {
   userInfo: null,
+  fromSearch: false,
+  song:{
+    poster: '',
+    name: '',
+    author: '',
+    songId:{},
   }
-
+  }
 })

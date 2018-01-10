@@ -24,8 +24,6 @@ Page({
   //事件处理函数
   bindViewTap:async function (e) {
     console.log(e)
-
-
     wx.navigateTo({
       url: '../playlist/playlist?playlistId=' + e.currentTarget.dataset.id + '&in=1'
     })
@@ -116,7 +114,6 @@ Page({
   },
   onLoad: function () {
     console.log("onLoad....")
-    console.log(app.globalData.userInfo)
   },
 })
 

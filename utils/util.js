@@ -51,7 +51,6 @@ var getMusicUrl = function (songId) {
         var j = JSON.stringify(result.data)
         var json = JSON.parse(j)
         console.log("请求getMusicUrl...")
-        console.log(json.data)
         resolve(json.data.msg[0].url)
       },
       fail(error) {
@@ -63,18 +62,14 @@ var getMusicUrl = function (songId) {
 }
 
 var getMusicDetail = function(songId) {
-  console.log("songId:")
-  console.log(songId)
+  console.log("songId:", songId)
   var p = new promise(function (resolve, reject) {
     qcloud.request({
       url: `${config.service.host}/weapp/songdetail?songId=` + songId,
       login: false,
       success(result) {
-        var j = JSON.stringify(result.data)
-        var json = JSON.parse(j)
         console.log("请求getMusicDetail...")
-        console.log(json.data)
-        resolve(json.data.msg[0])
+        resolve(result.data.data.msg[0])
       },
       fail(error) {
         console.log('request fail', error);
@@ -83,7 +78,22 @@ var getMusicDetail = function(songId) {
   })
   return p
 }
-
+var getSuggest = function(input){
+  var p = new promise(function (resolve, reject) {
+    qcloud.request({
+      url: `${config.service.host}/weapp/search?keywords=` + input,
+      login: false,
+      success(result) {
+        console.log("请求getSuggest...",input)
+        resolve(result.data.data.msg)
+      },
+      fail(error) {
+        console.log('request fail', error);
+      }
+    })
+  })
+  return p
+}
 //获取推荐歌单 index为歌单标签
 var getHotlist = function (index) {
   var p = new promise(function (resolve, reject){
@@ -91,11 +101,8 @@ var getHotlist = function (index) {
       url: `${config.service.host}/weapp/hotlist?index=` + index,
       login: false,
       success(result) {
-        var j = JSON.stringify(result.data)
-        var json = JSON.parse(j)
         console.log("请求getHotlist...")
-        console.log(json.data.msg)
-        resolve(json.data.msg)
+        resolve(result.data.data.msg)
       },
       fail(error) {
         console.log('request fail', error);
@@ -112,11 +119,8 @@ var getPlaylistDetail = function(playlistId){
       url: `${config.service.host}/weapp/playlist?playlistId=` + playlistId,
       login: false,
       success(result) {
-        var j = JSON.stringify(result.data)
-        var json = JSON.parse(j)
         console.log("请求getPlaylistDetail...")
-        console.log(json.data)
-        resolve(json.data)
+        resolve(result.data.data)
       },
       fail(error) {
         console.log('request fail', error);
@@ -133,11 +137,8 @@ var getUserPlaylist = function (userId) {
       url: `${config.service.host}/weapp/query/getList?userid=` + userId,
       login: false,
       success(result) {
-        var j = JSON.stringify(result.data)
-        var json = JSON.parse(j)
         console.log("请求getUserPlaylist...")
-        console.log(json.data)
-        resolve(json.data.msg)
+        resolve(result.data.data.msg)
       },
       fail(error) {
         console.log('request fail', error);
@@ -154,11 +155,8 @@ var getUserPlaylistDetail = function(playlistId){
       url: `${config.service.host}/weapp/query/getSong?listid=` + playlistId,
       login: false,
       success(result) {
-        var j = JSON.stringify(result.data)
-        var json = JSON.parse(j)
         console.log("请求getUserPlaylistDetail...")
-        console.log(json.data)
-        resolve(json.data.msg)
+        resolve(result.data.data.msg)
       },
       fail(error) {
         console.log('request fail', error);
@@ -176,11 +174,8 @@ var createUserPlaylist = function (userId, listName) {
       url: `${config.service.host}/weapp/update/createList?userid=`+userId+'&listname='+listName,
       login: false,
       success(result) {
-        var j = JSON.stringify(result.data)
-        var json = JSON.parse(j)
         console.log("请求createUserPlaylist...")
-        console.log(json.data)
-        resolve(json.data)
+        resolve(result.data.data)
       },
       fail(error) {
         console.log('request fail', error);
@@ -190,4 +185,20 @@ var createUserPlaylist = function (userId, listName) {
   return p
 }
 
-module.exports = { formatTime, showBusy, showSuccess, showModel, getMusicUrl, getHotlist, getPlaylistDetail, getUserPlaylist, getUserPlaylistDetail, createUserPlaylist, getMusicDetail }
+var addSong2List = function(listid,songid){
+  var p = new promise(function (resolve, reject) {
+    qcloud.request({
+      url: `${config.service.host}/weapp/update/addSong?listid=` + listid + '&songid=' + songid,
+      login: false,
+      success(result) {
+        console.log("请求addSong2List...")
+        resolve(result.data.data)
+      },
+      fail(error) {
+        console.log('request fail', error);
+      }
+    })
+  })
+  return p
+}
+module.exports = { formatTime, showBusy, showSuccess, showModel, getMusicUrl, getHotlist, getPlaylistDetail, getUserPlaylist, getUserPlaylistDetail, createUserPlaylist, getMusicDetail, addSong2List,getSuggest }

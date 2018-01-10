@@ -32,8 +32,6 @@ Page({
       playlist: _playlist
     })
     this.playlist = _playlist
-    console.log("playlist:")
-    console.log(this.playlist)
   },
   playMusic: function (e) {
     console.log(e)
@@ -47,14 +45,12 @@ Page({
       song.songId = songs[index].id
       audiolist[index] = song
     }
-
-    console.log("audiolist: ")
-    console.log(audiolist)
+    console.log("audiolist: ",audiolist)
 
     globalCourseAudioListManager.audioList = audiolist
     globalCourseAudioListManager.currentIndex = e.currentTarget.dataset.id
     console.log("currentIndex:" + globalCourseAudioListManager.currentIndex)
-    wx.navigateTo({
+    wx.switchTab({
       url: '../musicPlayer/musicPlayer'
     })
   }

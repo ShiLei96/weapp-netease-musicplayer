@@ -51,18 +51,34 @@ slider{
 }
 
 .player{
-  padding-top:20%;
+  padding-top:15%;
 }
 
 .playBtn{
-  width:80px;
-  height:80px;
+  width:60px;
+  height:60px;
   padding-left: 20px;
-  padding-right: 20px
+  padding-right: 20px;
+  padding-bottom: 10px
 }
 
 .controlBtn{
   width:50px;
   height:50px;
   padding-bottom: 15px
+}
+
+.modeBtn{
+  width:50px;
+  height:50px;
+  padding-bottom: 15px;
+  padding-right:15px;
+}
+
+.addBtn{
+  width:45px;
+  height:45px;
+  padding-bottom: 15px;
+  padding-top:7px;
+  margin-right:20px;
 }

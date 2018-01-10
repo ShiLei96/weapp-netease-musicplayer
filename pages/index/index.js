@@ -44,17 +44,51 @@ Page({
     scrollLeft: 0,
     inputShowed: false,
     inputVal: "",
-    listTag: "推荐歌单"
+    listTag: "推荐歌单",
+    searchText1: "1",
+    searchText2: "2",
+    searchText3: "3",
+    searchText4: "",
+    searchText:""
+  },
+  onShow: function () {
+    var that = this
+    // 调用登录接口
+    qcloud.login({
+      success(result) {
+        if (result) {
+          util.showSuccess('登录成功')
+          app.globalData.userInfo = result
+
+        } else {
+          // 如果不是首次登录，不会返回用户信息，请求用户信息接口获取
+          qcloud.request({
+            url: config.service.requestUrl,
+            login: true,
+            success(result) {
+              util.showSuccess('登录成功')
+              app.globalData.userInfo = result.data.data
+            },
+            fail(error) {
+              util.showModel('请求失败', error)
+              console.log('request fail', error)
+            }
+          })
+        }
+      },
+
+      fail(error) {
+        util.showModel('登录失败', error)
+        console.log('登录失败', error)
+      }
+    })
   },
   onReady: async function () {
     var hotlist
-    hotlist = await util.getHotlist("日语")
+    hotlist = await util.getHotlist("")
     this.setData({
       requestResult: hotlist
     })
-
-
-
     this.setData({
       objectMultiArray: [column1, column2[0]]
     })
@@ -85,27 +119,32 @@ Page({
       inputVal: ""
     });
   },
-  inputTyping: function (e) {
-    this.setData({
-      inputVal: e.detail.value
-    });
+  inputTyping:async function (e) {
+    console.log(e.detail.value)
+    wx.navigateTo({
+      url: '../search/search?keywords=' + e.detail.value
+    })
   },
 
   //事件处理函数
   bindViewTap: function (e) {
     console.log(e)
     var songList = this.data.requestResult[parseInt(e.currentTarget.dataset.id)]
-    console.log(songList)
     wx.navigateTo({
       url: '../playlist/playlist?playlistId=' + songList.id + '&in=0'
     })
   },
-  bindMultiPickerChange: function (e) {
+  bindMultiPickerChange: async function (e) {
     console.log(e)
     console.log('picker发送选择改变，携带值为', e.detail.value)
+    var hotlist
+    hotlist = await util.getHotlist(column2[e.detail.value[0]][e.detail.value[1]].name)
     this.setData({
-      multiIndex2: [0,0]
+      multiIndex2: [0, 0],
+      listTag: column2[e.detail.value[0]][e.detail.value[1]].name,
+      requestResult: hotlist
     })
+
   },
   bindMultiPickerColumnChange: function (e) {
     console.log(e)
@@ -125,39 +164,7 @@ Page({
     });
   },
   onLoad: function () {
-    var that = this
-    // 调用登录接口
-    qcloud.login({
-      success(result) {
-        if (result) {
-          util.showSuccess('登录成功')
-          app.globalData.userInfo = result
 
-        } else {
-          // 如果不是首次登录，不会返回用户信息，请求用户信息接口获取
-          qcloud.request({
-            url: config.service.requestUrl,
-            login: true,
-            success(result) {
-              util.showSuccess('登录成功')
-              console.log(result.data.data)
-              app.globalData.userInfo = result.data.data
-              console.log(app.globalData.userInfo)
-            },
-
-            fail(error) {
-              util.showModel('请求失败', error)
-              console.log('request fail', error)
-            }
-          })
-        }
-      },
-
-      fail(error) {
-        util.showModel('登录失败', error)
-        console.log('登录失败', error)
-      }
-    })
   },
   getUserInfo: function (e) {
     console.log(e)

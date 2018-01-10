@@ -1,16 +1,17 @@
 {
-  "pages":[
+  "pages": [
+    
     "pages/index/index",
-    "pages/logs/logs",
-    "pages/mymusic/mymusic",
+    "pages/search/search",
     "pages/musicPlayer/musicPlayer",
+    "pages/mymusic/mymusic",
     "pages/playlist/playlist"
   ],
-  "window":{
-    "backgroundTextStyle":"light",
+  "window": {
+    "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "音乐播放器",
-    "navigationBarTextStyle":"black"
+    "navigationBarTextStyle": "black"
   },
   "tabBar": {
     "color": "#2c2c2c",
@@ -21,6 +22,12 @@
         "selectedIconPath": "pages/res/music1r.png",
         "pagePath": "pages/index/index",
         "text": "推荐音乐"
+      },
+      {
+        "iconPath": "pages/res/music1b.png",
+        "selectedIconPath": "pages/res/music1r.png",
+        "pagePath": "pages/musicPlayer/musicPlayer",
+        "text": "正在播放"
       },
       {
         "iconPath": "pages/res/music2b.png",
