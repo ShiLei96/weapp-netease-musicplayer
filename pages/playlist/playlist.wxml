@@ -16,7 +16,9 @@
 
     <image src="../res/playlistPlay.png" mode="scaleToFill" style="width:30px;height:30px;padding-left:15px;float:left"></image>
     <text style="float:left;padding-left:7px">{{"播放全部"}}{{"(共"}}{{playlist.songlist.length}}{{"首)"}}</text>
-    <view style='text-align:right;padding-right:15px'><image src="../res/MutiSelect.png" mode="scaleToFill" bindtap="bindMutiSelect" style="width:30px;height:30px"></image></view>
+    <view style='text-align:right;padding-right:15px'>
+      <image src="../res/MutiSelect.png" mode="scaleToFill" bindtap="bindMutiSelect" style="width:30px;height:30px"></image>
+    </view>
   </view>
 
 
@@ -26,11 +28,11 @@
 </block>
 
 <block wx:for-items="{{playlist.songlist}}" wx:for-item="song">
-  <view class="song-item" bindtap="playMusic" data-id="{{index}}" data-title="{{playlist.name}}">
+  <view class="song-item"  >
     <view class="song-image">
       <image src="{{song.al.picUrl}}"></image>
     </view>
-    <view class="song-info">
+    <view class="song-info" bindtap="playMusic" data-id="{{index}}" data-title="{{playlist.name}}">
       <view>
         <text class="song-title">{{song.name}}</text>
       </view>
@@ -38,5 +40,7 @@
         <text class="song-singer">{{song.ar[0].name}}</text>
       </view>
     </view>
+        <image wx:if="{{isUserlist}}" data-id="{{index}}" bindtap="playlistAction" src="../res/point.png" mode="scaleToFill" style="float:right;width:20px;height:20px;padding-top:20px">
+    </image>
   </view>
 </block>

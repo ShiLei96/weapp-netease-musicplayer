@@ -1,4 +1,5 @@
 var util = require('../../utils/util.js')
+var config = require('../../config.js')
 var varTimeout;
 const globalBgAudioManager = getApp().backgroundAudioManager
 const globalCourseAudioListManager = getApp().courseAudioListManager
@@ -8,11 +9,17 @@ var animation = wx.createAnimation({
   duration: 8000,
   timingFunction: 'linear'
 })
+var modeImg = new Array(
+  "../res/单曲循环.png",
+  "../res/列表循环.png",
+  "../res/随机.png"
+)
 Page({
   data: {
-    playBtn: "../res/pause1.png",
+    playBtn: "../res/play1.png",
     prevBtn: "../res/prev1.png",
     nextBtn: "../res/next1.png",
+    changeModeBtn:"../res/列表循环.png",
     isSliding: false,
     playingTime: "00:00",
     songTime: "",
@@ -21,7 +28,8 @@ Page({
     poster: '',
     name: '',
     author: '',
-    objectArray: []
+    objectArray: [],
+    playSrc:""
   },
   onLoad: async function (options) {
     console.log("onLoad...")
@@ -46,16 +54,22 @@ Page({
     else {
       var song = await globalCourseAudioListManager.getCurrentAudio()
     }
-    this.setData({
-      poster: song.poster,
-      name: song.name,
-      author: song.author
-    })
+    if(song != null){
+      this.setData({
+        poster: song.poster,
+        name: song.name,
+        author: song.author
+      })
+    }
     console.log("songid :　" + song.songId)
 
     var src = await util.getMusicUrl(song.songId)
     if (globalBgAudioManager.audioId != song.songId) {
       globalBgAudioManager.src = src
+      this.setData({
+        playSrc:src,
+        playBtn: "../res/pause1.png",
+      })
     }
     globalBgAudioManager.audioId = song.songId
   },
@@ -79,7 +93,7 @@ Page({
     this.setData({
       animationData: animation.export()
     })
-    varTimeout = setTimeout(this.rotatePic.bind(this), 8000)
+    varTimeout = setTimeout(this.rotatePic.bind(this), 4000)
   },
   startAnimation: function () {
     n = n + 1
@@ -87,7 +101,7 @@ Page({
     this.setData({
       animationData: animation.export()
     })
-    varTimeout = setTimeout(this.rotatePic.bind(this), 8000)
+    varTimeout = setTimeout(this.rotatePic.bind(this), 4000)
   },
 
   //音乐控制
@@ -108,6 +122,7 @@ Page({
   },
   nextMusic: async function () {
     var song = await globalCourseAudioListManager.getNextAudio()
+
     this.setData({
       poster: song.poster,
       name: song.name,
@@ -116,6 +131,9 @@ Page({
     var src = await util.getMusicUrl(song.songId)
     console.log("下一首：" + "songid :　" + song.songId + "src : " + src)
     globalBgAudioManager.src = src
+    this.setData({
+      playSrc: src
+    })
   },
   prevMusic: async function () {
     var song = await globalCourseAudioListManager.getPrevAudio()
@@ -126,6 +144,9 @@ Page({
     })
     var src = await util.getMusicUrl(song.songId)
     console.log("上一首：" + "songid :　" + song.songId + "src : " + src)
+    this.setData({
+      playSrc: src
+    })
     globalBgAudioManager.src = src
   },
   sliderChanging: function () {
@@ -172,7 +193,11 @@ Page({
 
     globalBgAudioManager.onEnded((e) => {
       console.log("onEnded...")
-      this.nextMusic()
+      if(globalCourseAudioListManager.playMode == config.playMode.single){
+        globalBgAudioManager.src = this.data.playSrc
+      }else{
+        this.nextMusic()
+      }
     })
 
     globalBgAudioManager.onStop((e) => {
@@ -220,6 +245,12 @@ Page({
     console.log(duration);
     this.setData({
       songTime: duration
+    })
+  },
+  changeMode: function () {
+    var mode = globalCourseAudioListManager.changeMode()
+    this.setData({
+      changeModeBtn: modeImg[mode]
     })
   }
 })

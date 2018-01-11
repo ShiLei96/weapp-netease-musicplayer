@@ -34,7 +34,7 @@
 
       <picker mode="multiSelector" bindchange="bindMultiPickerChange" bindcolumnchange="bindMultiPickerColumnChange" value="{{multiIndex2}}" range="{{objectMultiArray}}" range-key="{{'name'}}">
 
-        <image src="../res/recommend.png" mode="scaleToFill" style="text-align:right;width:30px;height:30px;padding-left:260px"></image>
+        <image src="../res/recommend.png" mode="scaleToFill" style="text-align:right;width:30px;height:30px;padding-left:280px"></image>
 
       </picker>
     </view>
@@ -46,10 +46,10 @@
         </view>
         <view class="song-info">
           <view>
-            <text class="song-title" style='overflow:hidden;text-overflow:ellipsis;'>{{song.name}}</text>
+            <text class="song-title" style='overflow:hidden;text-overflow:ellipsis;'>{{song.title}}</text>
           </view>
           <view>
-            <text class="song-singer">{{song.copywriter}}</text>
+            <text class="song-singer">{{song.writer}}</text>
           </view>
         </view>
       </view>

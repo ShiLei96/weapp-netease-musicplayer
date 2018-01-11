@@ -27,7 +27,6 @@ var config = {
         single: 0, 
         order: 1, 
         random: 2, 
-        list: 3 
     }
 };
 

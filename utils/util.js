@@ -96,7 +96,7 @@ var getSuggest = function(input){
 }
 //获取推荐歌单 index为歌单标签
 var getHotlist = function (index) {
-  var p = new promise(function (resolve, reject){
+  return new promise(function (resolve, reject) {
     qcloud.request({
       url: `${config.service.host}/weapp/hotlist?index=` + index,
       login: false,
@@ -109,7 +109,6 @@ var getHotlist = function (index) {
       }
     })
   })
-  return p
 }
 
 //获取歌单详细信息 playlistId为歌单Id
@@ -201,4 +200,39 @@ var addSong2List = function(listid,songid){
   })
   return p
 }
-module.exports = { formatTime, showBusy, showSuccess, showModel, getMusicUrl, getHotlist, getPlaylistDetail, getUserPlaylist, getUserPlaylistDetail, createUserPlaylist, getMusicDetail, addSong2List,getSuggest }
+
+var delSong4List = function(listid,songid){
+  var p = new promise(function (resolve, reject) {
+    qcloud.request({
+      url: `${config.service.host}/weapp/update/deleteSong?listid=` + listid + '&songid=' + songid,
+      login: false,
+      success(result) {
+        console.log("请求delSong4List...")
+        resolve(result.data.data)
+      },
+      fail(error) {
+        console.log('request fail', error);
+      }
+    })
+  })
+  return p
+}
+
+var delSonglist = function(listid){
+  var p = new promise(function (resolve, reject) {
+    qcloud.request({
+      url: `${config.service.host}/weapp/update/deleteList?listid=` + listid,
+      login: false,
+      success(result) {
+        console.log("请求delSong4List...")
+        console.log(result.data.data)
+        resolve(result.data.data)
+      },
+      fail(error) {
+        console.log('request fail', error);
+      }
+    })
+  })
+  return p
+}
+module.exports = { formatTime, showBusy, showSuccess, showModel, getMusicUrl, getHotlist, getPlaylistDetail, getUserPlaylist, getUserPlaylistDetail, createUserPlaylist, getMusicDetail, addSong2List, getSuggest, delSong4List, delSonglist }

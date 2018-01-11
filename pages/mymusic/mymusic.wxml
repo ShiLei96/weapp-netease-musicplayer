@@ -4,31 +4,29 @@
 <text style="padding-left:20px">创建的歌单</text>
 </view>
 
-
 <view style='text-align:right' bindtap="bindSettingTap">
 <image  src="../res/settings.png" mode="scaleToFill"
 style="width:20px;height:20px;padding-right:10px"></image>
 </view>
-
 </block>
 
 <view wx:if="{{showBlock}}">
 <block wx:for-items="{{SongList}}" wx:for-item="songlist">
-    <view class="songlist-item" bindtap="bindViewTap" data-id="{{songlist.listid}}" data-title="{{songlist.title}}">
+    <view class="songlist-item" >
       <view class="songlist-image">
-        <image src="{{}}"></image>
+        <image src="../res/yomi.jpg"></image>
       </view>
-      <view class="songlist-info">
+      <view class="songlist-info" bindtap="bindViewTap" data-id="{{songlist.listid}}" data-title="{{songlist.listname}}">
         <view>
           <text class="songlist-title">{{songlist.listname}}</text>
-          <image src="../res/point.png" mode="scaleToFill" style="float:right;width:20px;height:20px;padding-top:20px">
-          </image>
+
         </view>
          <view>
           <text class="songlist-num">{{"共"}}{{songlist.count}}{{"首"}}</text>
         </view>
-     
       </view>
+                <image src="../res/point.png" data-id="{{songlist.listid}}" bindtap="playlistAction" mode="scaleToFill" style="float:right;width:20px;height:20px;padding-top:20px">
+          </image>
     </view>
     
   </block>

@@ -2,7 +2,7 @@
 
 <view class="player">
   <view class="info">
-    <image animation="{{animationData}}" style="border-radius: 50%; height:240px; width:240px" src="{{poster}}" mode="scaleToFill"></image>
+    <image animation="{{animationData}}" style="border-radius: 50%; height:240px; width:240px" src="{{poster}}"  mode="scaleToFill"></image>
   </view>
   <view>
     <view class="name">
@@ -24,7 +24,7 @@
 </view>
 
 <view style='text-align:center'>
-  <image src="../res/随机.png" class="modeBtn" bindtap="nextMusic"></image>
+  <image src="{{changeModeBtn}}" class="modeBtn" bindtap="changeMode"></image>
   <image src="{{prevBtn}}" class="controlBtn" bindtap="prevMusic"></image>
   <image src="{{playBtn}}" class="playBtn" bindtap="controlMusic"></image>
   <image src="{{nextBtn}}" class="controlBtn" bindtap="nextMusic"></image>

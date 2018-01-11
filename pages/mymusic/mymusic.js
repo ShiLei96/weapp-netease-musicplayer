@@ -25,7 +25,7 @@ Page({
   bindViewTap:async function (e) {
     console.log(e)
     wx.navigateTo({
-      url: '../playlist/playlist?playlistId=' + e.currentTarget.dataset.id + '&in=1'
+      url: '../playlist/playlist?playlistId=' + e.currentTarget.dataset.id + '&in=1&name=' + e.currentTarget.dataset.title
     })
   },
 
@@ -95,6 +95,7 @@ Page({
     })
   },
   onShow: function () {
+    this.setUserPlaylist()
     console.log("onShow...")
   },
   onHide: function () {
@@ -102,7 +103,6 @@ Page({
   },
   onReady: function () {
     console.log("onReady...")
-    this.setUserPlaylist()
   },
   setUserPlaylist:async function(){
     var userPlaylist
@@ -115,5 +115,25 @@ Page({
   onLoad: function () {
     console.log("onLoad....")
   },
+  playlistAction: function (e) {
+    console.log(e)
+    var that = this
+    wx.showActionSheet({
+      itemList: ['删除'],
+      success: function (res) {
+        //console.log(JSON.stringify(res))
+        //console.log(res.tapIndex)
+        if (res.tapIndex == 0) {
+          that.delSonglist(e.currentTarget.dataset.id)
+          that.setUserPlaylist()
+        }
+      }
+    })
+  },
+
+  delSonglist: async function (index) {
+    console.log("playlist：", index)
+    await util.delSonglist(index)
+  }
 })
 

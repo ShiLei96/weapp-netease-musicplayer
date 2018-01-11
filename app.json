@@ -1,10 +1,9 @@
 {
   "pages": [
-    
     "pages/index/index",
-    "pages/search/search",
     "pages/musicPlayer/musicPlayer",
     "pages/mymusic/mymusic",
+    "pages/search/search",
     "pages/playlist/playlist"
   ],
   "window": {
@@ -24,8 +23,8 @@
         "text": "推荐音乐"
       },
       {
-        "iconPath": "pages/res/music1b.png",
-        "selectedIconPath": "pages/res/music1r.png",
+        "iconPath": "pages/res/playing.png",
+        "selectedIconPath": "pages/res/playing2.png",
         "pagePath": "pages/musicPlayer/musicPlayer",
         "text": "正在播放"
       },
